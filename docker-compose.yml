@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/voltride
+      - MONGODB_URI=mongodb://mongodb:27017/voltride
+    depends_on:
+      - postgres
+      - mongodb
+    networks:
+      - voltride-network
+
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=voltride
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - voltride-network
+
+  mongodb:
+    image: mongo:6
+    environment:
+      - MONGO_INITDB_DATABASE=voltride
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - voltride-network
+
+volumes:
+  postgres-data:
+  mongodb-data:
+
+networks:
+  voltride-network:
+    driver: bridge
