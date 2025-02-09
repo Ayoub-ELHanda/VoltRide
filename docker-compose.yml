@@ -29,12 +29,36 @@ services:
 
   mongodb:
     image: mongo:6
+    command: mongod --storageEngine wiredTiger --wiredTigerCollectionBlockCompressor=zstd
     environment:
       - MONGO_INITDB_DATABASE=voltride
     ports:
       - "27017:27017"
     volumes:
       - mongodb-data:/data/db
+    networks:
+      - voltride-network
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - voltride-network
+
+  mongo-express:
+    image: mongo-express
+    restart: always
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_PORT=27017
+      - ME_CONFIG_BASICAUTH_USERNAME=admin
+      - ME_CONFIG_BASICAUTH_PASSWORD=admin
+    ports:
+      - "8081:8081"
+    depends_on:
+      - mongodb
     networks:
       - voltride-network
 
