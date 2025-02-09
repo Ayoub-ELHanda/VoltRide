@@ -1,12 +1,16 @@
+import { ScooterModel } from './ScooterModel';
+
 export class Scooter {
     constructor(
         private readonly id: string,
-        private readonly model: string,
-        private batteryLevel: number,
-        private isAvailable: boolean = true
+        private licensePlate: string,
+        private status: string,
+        private dealerId: string,
+        private partnerId: string,
+        private readonly scooterModel: ScooterModel
     ) {
-        if (batteryLevel < 0 || batteryLevel > 100) {
-            throw new Error("Le niveau de batterie doit être entre 0 et 100.");
+        if (status !== 'AVAILABLE' && status !== 'MAINTENANCE') {
+            throw new Error("Le statut du scooter doit être 'AVAILABLE' ou 'MAINTENANCE'.");
         }
     }
 
@@ -14,26 +18,39 @@ export class Scooter {
         return this.id;
     }
 
-    getModel(): string {
-        return this.model;
+    getLicensePlate(): string {
+        return this.licensePlate;
     }
 
-    getBatteryLevel(): number {
-        return this.batteryLevel;
+    setLicensePlate(licensePlate: string): void {
+        this.licensePlate = licensePlate;
     }
 
-    isScooterAvailable(): boolean {
-        return this.isAvailable;
+    getStatus(): string {
+        return this.status;
     }
 
-    updateBatteryLevel(level: number): void {
-        if (level < 0 || level > 100) {
-            throw new Error("Le niveau de batterie doit être entre 0 et 100.");
-        }
-        this.batteryLevel = level;
+    setStatus(status: string): void {
+        this.status = status;
     }
 
-    toggleAvailability(): void {
-        this.isAvailable = !this.isAvailable;
+    getDealerId(): string {
+        return this.dealerId;
+    }
+
+    setDealerId(dealerId: string): void {
+        this.dealerId = dealerId;
+    }
+
+    getPartnerId(): string {
+        return this.partnerId;
+    }
+
+    setPartnerId(partnerId: string): void {
+        this.partnerId = partnerId;
+    }
+
+    getScooterModel(): ScooterModel {
+        return this.scooterModel;
     }
 }
