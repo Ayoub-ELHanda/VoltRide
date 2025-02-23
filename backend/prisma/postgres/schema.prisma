@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-  output = "../../node_modules/@prisma/postgres/client"
+  output   = "../../node_modules/@prisma/postgres/client"
 }
 
 datasource db {
@@ -9,28 +9,32 @@ datasource db {
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model articles {
-  id             Int           @id @default(autoincrement())
-  name           String        @db.VarChar
+model Article {
+  id             Int          @id @default(autoincrement())
+  name           String       @unique @db.VarChar
   stock_quantity Int
-  order_items    order_items[]
+  order_items    Order_item[]
+
+  @@map(name: "articles")
 }
 
-model dealers {
-  id             Int        @id @default(autoincrement())
-  company_name   String     @db.VarChar
-  contact_number String     @db.VarChar
-  contact_email  String     @unique @db.VarChar
-  address        String     @db.VarChar
-  country        String     @db.VarChar
-  postal_code    String     @db.VarChar
-  user_id        Int?       @unique
-  users          users?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_dealers_user")
-  scooters       scooters[]
+model Dealer {
+  id             Int       @id @default(autoincrement())
+  company_name   String    @db.VarChar
+  contact_number String    @unique @db.VarChar
+  contact_email  String    @unique @db.VarChar
+  address        String    @db.VarChar
+  country        String    @db.VarChar
+  postal_code    String    @db.VarChar
+  user_id        Int?      @unique
+  users          User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_dealers_user")
+  scooters       Scooter[]
+
+  @@map(name: "dealers")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model maintenances {
+model Maintenance {
   id              Int      @id @default(autoincrement())
   technician_name String   @db.VarChar
   type            String   @db.VarChar
@@ -38,85 +42,101 @@ model maintenances {
   cost            Decimal  @db.Decimal(10, 2)
   comment         String?
   scooter_id      Int
-  scooters        scooters @relation(fields: [scooter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_maintenance_scooter")
+  scooters        Scooter  @relation(fields: [scooter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_maintenance_scooter")
+
+  @@map(name: "maintenances")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model order_items {
+model Order_item {
   id          Int      @id @default(autoincrement())
   article_id  Int
   unit_price  Decimal  @db.Decimal(10, 2)
   quantity    Int
   total_price Decimal? @db.Decimal(10, 2)
   order_id    Int
-  articles    articles @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_item_article")
-  orders      orders   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_item_order")
+  articles    Article  @relation(fields: [article_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_item_article")
+  orders      Order    @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_item_order")
+
+  @@map(name: "order_items")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
-model orders {
-  id                Int           @id @default(autoincrement())
-  supplier          String        @db.VarChar
-  status            String        @db.VarChar
-  delivery_due_date DateTime      @db.Date
-  tax               Decimal       @db.Decimal(5, 2)
-  total_amount      Decimal       @db.Decimal(10, 2)
+model Order {
+  id                Int          @id @default(autoincrement())
+  supplier          String       @db.VarChar
+  status            String       @db.VarChar
+  delivery_due_date DateTime     @db.Date
+  tax               Decimal      @db.Decimal(5, 2)
+  total_amount      Decimal      @db.Decimal(10, 2)
   user_id           Int
-  order_items       order_items[]
-  users             users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_user")
+  order_items       Order_item[]
+  users             User         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_order_user")
+
+  @@map(name: "orders")
 }
 
-model partners {
-  id             Int        @id @default(autoincrement())
-  company_name   String     @db.VarChar
-  contact_number String     @db.VarChar
-  contact_email  String     @unique @db.VarChar
-  address        String     @db.VarChar
-  country        String     @db.VarChar
-  postal_code    String     @db.VarChar
-  type           String     @db.VarChar
-  user_id        Int?       @unique
-  users          users?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_partners_user")
-  scooters       scooters[]
+model Partner {
+  id             Int       @id @default(autoincrement())
+  company_name   String    @db.VarChar
+  contact_number String    @unique @db.VarChar
+  contact_email  String    @unique @db.VarChar
+  address        String    @db.VarChar
+  country        String    @db.VarChar
+  postal_code    String    @db.VarChar
+  type           String    @db.VarChar
+  user_id        Int?      @unique
+  users          User?     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_partners_user")
+  scooters       Scooter[]
+
+  @@map(name: "partners")
 }
 
-model scooters {
-  id               Int             @id @default(autoincrement())
-  license_plate    String          @unique @db.VarChar
-  status           String          @db.VarChar
+model Scooter {
+  id               Int           @id @default(autoincrement())
+  license_plate    String        @unique @db.VarChar
+  status           String        @db.VarChar
   dealer_id        Int?
   partner_id       Int?
   scooter_model_id Int
-  maintenances     maintenances[]
-  dealers          dealers?        @relation(fields: [dealer_id], references: [id], onUpdate: NoAction, map: "fk_scooter_dealer")
-  scooters_models  scooters_models @relation(fields: [scooter_model_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_scooter_model")
-  partners         partners?       @relation(fields: [partner_id], references: [id], onUpdate: NoAction, map: "fk_scooter_partner")
-  warranty         warranty?
+  maintenances     Maintenance[]
+  dealers          Dealer?       @relation(fields: [dealer_id], references: [id], onUpdate: NoAction, map: "fk_scooter_dealer")
+  scooters_models  Scooter_model @relation(fields: [scooter_model_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_scooter_model")
+  partners         Partner?      @relation(fields: [partner_id], references: [id], onUpdate: NoAction, map: "fk_scooter_partner")
+  warranty         Warranty?
+
+  @@map(name: "scooters")
 }
 
-model scooters_models {
-  id                   Int        @id @default(autoincrement())
-  name                 String     @db.VarChar
+model Scooter_model {
+  id                   Int       @id @default(autoincrement())
+  name                 String    @unique @db.VarChar
   battery_range        Int
   maintenance_interval Int
-  scooters             scooters[]
+  scooters             Scooter[]
+
+  @@map(name: "scooters_models")
 }
 
-model users {
-  id       Int       @id @default(autoincrement())
-  email    String    @unique @db.VarChar
-  password String    @db.VarChar
-  role     String    @db.VarChar
-  dealers  dealers?
-  orders   orders[]
-  partners partners?
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique @db.VarChar
+  password String   @db.VarChar
+  role     String   @db.VarChar
+  dealers  Dealer?
+  orders   Order[]
+  partners Partner?
+
+  @@map(name: "users")
 }
 
-model warranty {
+model Warranty {
   id         Int      @id @default(autoincrement())
   start_date DateTime @db.Date
   end_date   DateTime @db.Date
   type       String   @db.VarChar
   scooter_id Int      @unique
-  scooters   scooters @relation(fields: [scooter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_warranty_scooter")
+  scooters   Scooter  @relation(fields: [scooter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_warranty_scooter")
+
+  @@map(name: "warranties")
 }
