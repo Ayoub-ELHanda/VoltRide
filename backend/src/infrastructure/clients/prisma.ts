@@ -6,7 +6,7 @@ const prisma = new PrismaClient()
 async function main() {
 
     // Create a new user
-    await prisma.users.create({
+    await prisma.user.create({
         data: {
             email: 'titi@titi.fr',
             password: 'titi',
@@ -14,7 +14,7 @@ async function main() {
         },
     })
 
-    const allUsers = await prisma.users.findMany()
+    const allUsers = await prisma.user.findMany()
     console.dir(allUsers, { depth: null })
 }
 
