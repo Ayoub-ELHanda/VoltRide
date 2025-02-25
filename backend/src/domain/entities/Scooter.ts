@@ -2,11 +2,11 @@ import { ScooterModel } from './ScooterModel';
 
 export class Scooter {
     constructor(
-        private readonly id: string,
+        private readonly id: number,
         private licensePlate: string,
         private status: string,
-        private dealerId: string,
-        private partnerId: string,
+        private dealerId: number,
+        private partnerId: number,
         private readonly scooterModel: ScooterModel
     ) {
         if (status !== 'AVAILABLE' && status !== 'MAINTENANCE') {
@@ -14,7 +14,7 @@ export class Scooter {
         }
     }
 
-    getId(): string {
+    getId(): number {
         return this.id;
     }
 
@@ -34,19 +34,19 @@ export class Scooter {
         this.status = status;
     }
 
-    getDealerId(): string {
+    getDealerId(): number {
         return this.dealerId;
     }
 
-    setDealerId(dealerId: string): void {
+    setDealerId(dealerId: number): void {
         this.dealerId = dealerId;
     }
 
-    getPartnerId(): string {
+    getPartnerId(): number {
         return this.partnerId;
     }
 
-    setPartnerId(partnerId: string): void {
+    setPartnerId(partnerId: number): void {
         this.partnerId = partnerId;
     }
 

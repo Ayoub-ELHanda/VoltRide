@@ -2,7 +2,7 @@ import { ScooterModel } from './ScooterModel';
 
 export class Client {
     constructor(
-        private readonly id: string,
+        private readonly id: number,
         private firstName: string,
         private lastName: string,
         private email: string,
@@ -15,7 +15,7 @@ export class Client {
         }
     }
 
-    getId(): string {
+    getId(): number {
         return this.id;
     }
 
@@ -62,7 +62,7 @@ export class Client {
     getPreferedScooterModel(): ScooterModel {
         return this.preferedScooterModel;
     }
-    
+
     setPreferedScooterModel(preferedScooterModel: ScooterModel): void {
         this.preferedScooterModel = preferedScooterModel;
     }

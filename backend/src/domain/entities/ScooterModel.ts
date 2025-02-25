@@ -1,9 +1,9 @@
-export class ScooterModel{
+export class ScooterModel {
     constructor(
-        private readonly id: string,
-        private name: string,
-        private batteryRange: number,
-        private maintenanceInterval: number
+        private readonly id: number,
+        private name: string = "",
+        private batteryRange: number = 0,
+        private maintenanceInterval: number = 0
     ) {
         if (batteryRange < 0) {
             throw new Error("La portée de la batterie doit être supérieure à 0.");
@@ -13,7 +13,7 @@ export class ScooterModel{
         }
     }
 
-    getId(): string {
+    getId(): number {
         return this.id;
     }
 
