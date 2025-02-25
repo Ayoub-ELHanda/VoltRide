@@ -39,17 +39,19 @@ model Maintenance {
   comment         String?
   scooter_id      Int
   scooter         Scooter      @relation(fields: [scooter_id], references: [id], onDelete: Cascade)
-  notifications   Notification[]
-}
 
+  // Relation avec Notification
+  notifications   Notification[]  // <== Ajout ici
+}
 
 model Notification {
-  id             Int      @id @default(autoincrement())
-  message        String   @db.VarChar
-  sent_at        DateTime @default(now())
+  id             Int          @id @default(autoincrement())
+  message        String       @db.VarChar
+  sent_at        DateTime     @default(now())
   maintenance_id Int
-  maintenance    Maintenance @relation(fields: [maintenance_id], references: [id], onDelete: Cascade)
+  maintenance    Maintenance  @relation(fields: [maintenance_id], references: [id], onDelete: Cascade)
 }
+
 
 
 model OrderItem {
