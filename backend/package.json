@@ -5,8 +5,7 @@
   "types": "dist/main.d.ts",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev --respawn src/interfaces/server.ts",
-    "start": "node dist/interfaces/server.js",
+    "dev": "node dist/infrastructure/express/server.js",
     "prisma:generate:postgres": "prisma generate --schema prisma/postgres/schema.prisma",
     "prisma:migrate:postgres": "prisma migrate dev --schema prisma/postgres/schema.prisma --name",
     "prisma:pull:mongo": "prisma db pull --force --schema prisma/mongo/schema.prisma",
