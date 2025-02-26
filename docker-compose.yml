@@ -1,81 +1,99 @@
 version: '3.8'
 
 services:
+  # Backend service
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    container_name: voltride-backend
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/voltride
-      - MONGODB_URI=mongodb://mongodb:27017/voltride
+      - NODE_ENV=production
+      - PORT=3000
+      - FRAMEWORK=express # or fastify
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/voltride?schema=public
+      - MONGODB_URI=mongodb://mongo:27017/voltride
     depends_on:
       - postgres
-      - mongodb
-    networks:
-      - voltride-network
+      - mongo
     volumes:
       - ./backend:/app
-    command: >
-      sh -c "
-      ./wait-for-it.sh postgres:5432 -- 
-      npx prisma generate --schema prisma/postgres/schema.prisma && 
-      npx prisma migrate dev --schema prisma/postgres/schema.prisma --name init && 
-      npm run build && 
-      npm start"
+      - /app/node_modules
+    networks:
+      - voltride-network
+    command: sh -c "./wait-for-it.sh postgres:5432 -t 60 -- node dist/main.js"
 
+  # PostgreSQL database
   postgres:
     image: postgres:15-alpine
+    container_name: voltride-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=voltride
-    ports:
-      - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
       - voltride-network
 
-  mongodb:
-    image: mongo:6
-    command: mongod --storageEngine wiredTiger --wiredTigerCollectionBlockCompressor=zstd
-    environment:
-      - MONGO_INITDB_DATABASE=voltride
+  # MongoDB database
+  mongo:
+    image: mongo:6-jammy
+    container_name: voltride-mongo
+    restart: unless-stopped
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=voltride
     volumes:
-      - mongodb-data:/data/db
+      - mongo-data:/data/db
     networks:
       - voltride-network
 
-  adminer:
-    image: adminer
-    restart: always
+  # pgAdmin for PostgreSQL management
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: voltride-pgadmin
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@voltride.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - postgres
     networks:
       - voltride-network
 
+  # Mongo Express for MongoDB management
   mongo-express:
     image: mongo-express
-    restart: always
+    container_name: voltride-mongo-express
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
     environment:
-      - ME_CONFIG_MONGODB_SERVER=mongodb
+      - ME_CONFIG_MONGODB_SERVER=mongo
       - ME_CONFIG_MONGODB_PORT=27017
       - ME_CONFIG_BASICAUTH_USERNAME=admin
       - ME_CONFIG_BASICAUTH_PASSWORD=admin
-    ports:
-      - "8081:8081"
     depends_on:
-      - mongodb
+      - mongo
     networks:
       - voltride-network
 
 volumes:
   postgres-data:
-  mongodb-data:
+  mongo-data:
+  pgadmin-data:
 
 networks:
   voltride-network:

@@ -1,14 +1,25 @@
 {
-    "compilerOptions": {
-        "outDir": "dist",
-        "rootDir": "src",
-        "strict": true,
-        "module": "CommonJS",
-        "target": "ES6",
-        "esModuleInterop": true,
-        "baseUrl": ".",
-        "paths": {
-          "@prisma/client": ["node_modules/.prisma/client/index.d.ts"]
-        }
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "esModuleInterop": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@adapters/*": ["src/adapters/*"],
+      "@frameworks/*": ["src/frameworks/*"]
     }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }

@@ -1,5 +1,23 @@
 {
-  "devDependencies": {
-    "@types/nodemailer": "^6.4.17"
+  "name": "voltride",
+  "version": "1.0.0",
+  "description": "VoltRide - Electric Scooter Management Platform",
+  "private": true,
+  "workspaces": [
+    "backend"
+  ],
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "build": "cd backend && npm run build",
+    "test": "cd backend && npm test",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:build": "docker-compose build",
+    "docker:logs": "docker-compose logs -f",
+    "docker:restart": "docker-compose restart"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
