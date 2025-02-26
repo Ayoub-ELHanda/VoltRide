@@ -28,3 +28,10 @@ export interface UpdateOrderDTO {
     supplier?: string;
     deliveryDueDate?: Date;
 }
+
+export interface AddItemToOrderDTO {
+    orderId: number;
+    articleId: number;
+    quantity: number;
+    unitPrice: Decimal;
+}

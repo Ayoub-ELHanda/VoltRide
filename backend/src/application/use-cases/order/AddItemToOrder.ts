@@ -1,6 +1,7 @@
 import { OrderRepository } from '../../../infrastructure/orm/OrderRepository';
 import { OrderItem } from '../../../domain/entities/OrderItem';
 import { Decimal } from '@prisma/client/runtime/library';
+import { AddItemToOrderDTO } from '../../dtos/OrderDTO';
 
 export class AddItemToOrder {
     private orderRepository: OrderRepository;
@@ -9,12 +10,7 @@ export class AddItemToOrder {
         this.orderRepository = orderRepository;
     }
 
-    async execute(data: {
-        orderId: number;
-        articleId: number;
-        quantity: number;
-        unitPrice: Decimal;
-    }) {
+    async execute(data: AddItemToOrderDTO) {
         const orderData = await this.orderRepository.getOrderById(data.orderId);
         if (!orderData) {
             throw new Error('Commande introuvable.');
@@ -38,11 +34,8 @@ export class AddItemToOrder {
         );
 
         const totalAmount = orderData.order_items.reduce(
-            (acc, orderItem) => acc.add(orderItem.getTotalPrice()), new Decimal(0)
+            (accumulator: Decimal, orderItem) => accumulator.add(orderItem.total_price ?? new Decimal(0)),
+            new Decimal(0)
         );
-
-        orderData.setTotalAmount(totalAmount);
-
-        return await this.orderRepository.updateOrder(orderData);
     }
 }

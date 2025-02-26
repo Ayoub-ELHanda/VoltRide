@@ -13,10 +13,10 @@ export class Order {
         private deliveryDueDate: Date,
         private readonly orderItems: OrderItem[]
     ) {
-        if (taxRate < 0) {
+        if (taxRate.lessThan(new Decimal(0))) {
             throw new Error('Le taux de taxe ne peut pas être négatif.');
         }
-        if (totalAmount < 0) {
+        if (totalAmount.lessThan(new Decimal(0))) {
             throw new Error('Le montant total ne peut pas être négatif.');
         }
         if (status !== 'DRAFT' && status !== 'SENT' && status !== 'RECEIVED') {
@@ -39,19 +39,19 @@ export class Order {
         this.userId = userId;
     }
 
-    getTaxRate(): number {
+    getTaxRate(): Decimal {
         return this.taxRate;
     }
 
-    setTaxRate(taxRate: number): void {
+    setTaxRate(taxRate: Decimal): void {
         this.taxRate = taxRate;
     }
 
-    getTotalAmount(): number {
+    getTotalAmount(): Decimal {
         return this.totalAmount;
     }
 
-    setTotalAmount(totalAmount: number): void {
+    setTotalAmount(totalAmount: Decimal): void {
         this.totalAmount = totalAmount;
     }
 

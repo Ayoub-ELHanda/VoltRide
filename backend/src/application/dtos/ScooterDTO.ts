@@ -22,5 +22,5 @@ export interface UpdateScooterDTO {
     status?: string;
     dealerId?: number;
     partnerId?: number;
-    scooterModelId?: number;
+    scooterModelId: number;
 }

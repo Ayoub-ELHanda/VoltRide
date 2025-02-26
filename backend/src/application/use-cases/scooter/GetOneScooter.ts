@@ -1,4 +1,4 @@
-import { ScooterRepository } from '../../infrastructure/orm/ScooterRepository';
+import { ScooterRepository } from '../../../infrastructure/orm/ScooterRepository';
 
 export class GetOneScooter {
     private scooterRepository: ScooterRepository;
