@@ -1,6 +1,7 @@
 import { Order } from '../../../domain/entities/Order';
 import { OrderItem } from '../../../domain/entities/OrderItem';
 import { OrderRepository } from '../../../infrastructure/orm/OrderRepository';
+import { CreateOrderDTO } from '../../dtos/OrderDTO';
 
 export class AddOrder {
     private orderRepository: OrderRepository;
@@ -9,19 +10,12 @@ export class AddOrder {
         this.orderRepository = orderRepository;
     }
 
-    async execute(data: {
-        userId: number;
-        taxRate: number;
-        totalAmount: number;
-        status: string;
-        supplier: string;
-        deliveryDueDate: Date;
-    }) {
-        if (data.totalAmount <= 0) {
+    async execute(data: CreateOrderDTO) {
+        if (data.totalAmount.lessThan(0)) {
             throw new Error("Le montant total doit être supérieur à 0.");
         }
 
-        if (data.taxRate < 0) {
+        if (data.taxRate.lessThan(0)) {
             throw new Error("Le taux de taxe ne peut pas être négatif.");
         }
 

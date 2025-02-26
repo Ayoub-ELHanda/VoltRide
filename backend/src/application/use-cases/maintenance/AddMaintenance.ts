@@ -1,20 +1,20 @@
 import { Maintenance } from '../../../domain/entities/Maintenance';
 import { MaintenanceRepository } from '../../../infrastructure/orm/MaintenanceRepository';
+import { MaintenanceDTO } from '../../dtos/MaintenanceDTO';
 
 export class AddMaintenance {
-    constructor(private maintenanceRepository: MaintenanceRepository) {}
+    constructor(private maintenanceRepository: MaintenanceRepository) { }
 
-    async execute(data: any) {
-        const { type, date, cost, comment, technician_name, scooter_id } = data;
+    async execute(data: MaintenanceDTO) {
+        const { type, date, cost, comment, technicianName, scooterId } = data;
 
-        // Ensure the scooter_id is being passed to the domain entity
         const maintenance = new Maintenance(
             type,
             new Date(date),
             cost,
-            comment,
-            technician_name,
-            parseInt(scooter_id)
+            comment || '',
+            technicianName,
+            scooterId
         );
 
         return await this.maintenanceRepository.addMaintenance(maintenance);

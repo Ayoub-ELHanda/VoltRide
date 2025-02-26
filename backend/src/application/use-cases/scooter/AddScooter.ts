@@ -1,7 +1,8 @@
-import { Scooter } from '../../domain/entities/Scooter';
-import { ScooterModel } from '../../domain/entities/ScooterModel';
-import { ScooterRepository } from '../../infrastructure/orm/ScooterRepository';
-import { ScooterModelRepository } from '../../infrastructure/orm/ScooterModelRepository';
+import { Scooter } from '../../../domain/entities/Scooter';
+import { ScooterModel } from '../../../domain/entities/ScooterModel';
+import { ScooterRepository } from '../../../infrastructure/orm/ScooterRepository';
+import { ScooterModelRepository } from '../../../infrastructure/orm/ScooterModelRepository';
+import { CreateScooterDTO } from '../../dtos/ScooterDTO';
 
 export class AddScooter {
     private scooterRepository: ScooterRepository;
@@ -10,13 +11,7 @@ export class AddScooter {
         this.scooterRepository = scooterRepository;
     }
 
-    async execute(data: {
-        licensePlate: string;
-        status: string;
-        dealerId: number;
-        partnerId: number;
-        scooterModelId: number;
-    }) {
+    async execute(data: CreateScooterDTO) {
         const scooterModelRepository = new ScooterModelRepository();
         const existingScooterModel = await scooterModelRepository.getScooterModelById(data.scooterModelId);
 
@@ -35,8 +30,8 @@ export class AddScooter {
             0,
             data.licensePlate,
             data.status,
-            data.dealerId,
-            data.partnerId,
+            data.dealerId ?? 0,
+            data.partnerId ?? 0,
             scooterModel,
         );
 

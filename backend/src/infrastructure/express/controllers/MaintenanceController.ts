@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import { MaintenanceRepository } from '../../infrastructure/orm/MaintenanceRepository';
-import { AddMaintenance } from '../../application/use-cases/maintenance/AddMaintenance';
-import { UpdateMaintenance } from '../../application/use-cases/maintenance/UpdateMaintenance';
-import { DeleteMaintenance } from '../../application/use-cases/maintenance/DeleteMaintenance';
-import { GetAllMaintenances } from '../../application/use-cases/maintenance/GetAllMaintenances';
-import { GetMaintenanceById } from '../../application/use-cases/maintenance/GetMaintenanceById';
+import { MaintenanceRepository } from '../../../infrastructure/orm/MaintenanceRepository';
+import { AddMaintenance } from '../../../application/use-cases/maintenance/AddMaintenance';
+import { UpdateMaintenance } from '../../../application/use-cases/maintenance/UpdateMaintenance';
+import { DeleteMaintenance } from '../../../application/use-cases/maintenance/DeleteMaintenance';
+import { GetAllMaintenances } from '../../../application/use-cases/maintenance/GetAllMaintenances';
+import { GetMaintenanceById } from '../../../application/use-cases/maintenance/GetMaintenanceById';
 
 const maintenanceRepository = new MaintenanceRepository();
 

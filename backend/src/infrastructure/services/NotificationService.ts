@@ -13,7 +13,7 @@ export class NotificationService {
         });
     }
 
-    // ✅ Send Email
+    // Send Email
     async sendEmail(to: string, subject: string, message: string) {
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -31,11 +31,11 @@ export class NotificationService {
         }
     }
 
-    // ✅ Send SMS using Nodemailer and Nexmo
+    // Send SMS using Nodemailer and Nexmo
     async sendSMS(to: string, message: string) {
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to: `${to}@sms.vonage.com`, // Nexmo (Vonage) SMS Gateway
+            to: `${to}@sms.vonage.com`,
             subject: 'SMS Notification',
             text: message
         };

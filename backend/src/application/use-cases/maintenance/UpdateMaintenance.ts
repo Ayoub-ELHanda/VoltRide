@@ -1,28 +1,20 @@
 import { Maintenance } from '../../../domain/entities/Maintenance';
 import { MaintenanceRepository } from '../../../infrastructure/orm/MaintenanceRepository';
+import { UpdateMaintenanceDTO } from '../../dtos/MaintenanceDTO';
 
 export class UpdateMaintenance {
-    constructor(private maintenanceRepository: MaintenanceRepository) {}
+    constructor(private maintenanceRepository: MaintenanceRepository) { }
 
-    async execute(data: {
-        id: number;
-        type: string;
-        date: string;
-        cost: number;
-        comment: string;
-        technician_name: string;
-        scooter_id: number;
-    }) {
+    async execute(data: UpdateMaintenanceDTO) {
         const maintenance = new Maintenance(
-            data.type,
-            new Date(data.date),
-            data.cost,
-            data.comment,
-            data.technician_name,
-            data.scooter_id
+            data.type || '',
+            new Date(data.date || ''),
+            data.cost || 0,
+            data.comment || '',
+            data.technicianName || '',
+            data.scooterId || 0
         );
-        
-        // Set the ID for the existing record
+
         maintenance.setId(data.id);
 
         return await this.maintenanceRepository.updateMaintenance(maintenance);

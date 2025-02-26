@@ -1,5 +1,6 @@
 import { ScooterModel } from '../../../domain/entities/ScooterModel';
 import { ScooterModelRepository } from '../../../infrastructure/orm/ScooterModelRepository';
+import { CreateScooterModelDTO } from '../../dtos/ScooterModelDTO';
 
 export class AddScooterModel {
     private scooterModelRepository: ScooterModelRepository;
@@ -8,11 +9,7 @@ export class AddScooterModel {
         this.scooterModelRepository = scooterModelRepository;
     }
 
-    async execute(data: {
-        name: string;
-        batteryRange: number;
-        maintenanceInterval: number;
-    }) {
+    async execute(data: CreateScooterModelDTO) {
         const scooterModel = new ScooterModel(
             0,
             data.name,

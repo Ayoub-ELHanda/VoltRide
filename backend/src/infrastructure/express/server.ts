@@ -2,8 +2,8 @@ import express from 'express';
 import cors from 'cors';
 
 import scooterRoutes from './routes/ScooterRoutes';
-import maintenanceRoutes from '../../interface/routes/MaintenanceRoutes';
-import notificationRoutes from '../../interface/routes/NotificationRoutes';
+import maintenanceRoutes from './routes/MaintenanceRoutes';
+import notificationRoutes from './routes/NotificationRoutes';
 import scooterModelRouter from './routes/ScooterModelRouter';
 
 const PORT = 3000;
