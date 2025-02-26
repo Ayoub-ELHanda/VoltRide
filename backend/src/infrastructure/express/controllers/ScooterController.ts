@@ -1,7 +1,5 @@
 import { Request, Response } from 'express';
 import { PrismaClient } from '@prisma/client';
-
-
 import { ScooterRepository } from '../../orm/ScooterRepository';
 import { ScooterModelRepository } from '../../orm/ScooterModelRepository';
 import { GetAllScooters } from '../../../application/use-cases/scooter/GetAllScooters';
@@ -38,24 +36,24 @@ export class ScooterController {
     static async add(req: Request, res: Response) {
         try {
             const { licensePlate, status, dealerId, partnerId, scooterModelId } = req.body;
-    
+
             // Validate scooterModelId
             if (!scooterModelId || isNaN(parseInt(scooterModelId))) {
-                return res.status(400).json({ 
-                    message: 'Invalid or missing scooterModelId' 
+                return res.status(400).json({
+                    message: 'Invalid or missing scooterModelId'
                 });
             }
-    
+
             // Check if the scooterModelId exists
             const scooterModelRepository = new ScooterModelRepository();
             const existingScooterModel = await scooterModelRepository.getScooterModelById(parseInt(scooterModelId));
-    
+
             if (!existingScooterModel) {
-                return res.status(400).json({ 
-                    message: 'Invalid scooterModelId: Model does not exist' 
+                return res.status(400).json({
+                    message: 'Invalid scooterModelId: Model does not exist'
                 });
             }
-    
+
             // Check if the dealerId exists
             if (dealerId) {
                 const dealerExists = await prisma.dealer.findUnique({
@@ -63,14 +61,14 @@ export class ScooterController {
                         id: dealerId
                     }
                 });
-    
+
                 if (!dealerExists) {
-                    return res.status(400).json({ 
-                        message: 'Invalid dealerId: Dealer does not exist' 
+                    return res.status(400).json({
+                        message: 'Invalid dealerId: Dealer does not exist'
                     });
                 }
             }
-    
+
             // Check if the partnerId exists
             if (partnerId) {
                 const partnerExists = await prisma.partner.findUnique({
@@ -78,14 +76,14 @@ export class ScooterController {
                         id: partnerId
                     }
                 });
-    
+
                 if (!partnerExists) {
-                    return res.status(400).json({ 
-                        message: 'Invalid partnerId: Partner does not exist' 
+                    return res.status(400).json({
+                        message: 'Invalid partnerId: Partner does not exist'
                     });
                 }
             }
-    
+
             // If everything is okay, proceed to create the scooter
             const scooter = await addScooter.execute({
                 licensePlate,
@@ -95,18 +93,18 @@ export class ScooterController {
                 scooterModelId
             });
             res.status(201).json(scooter);
-    
+
         } catch (error: any) {
             console.error("Erreur lors de l'ajout du scooter:", error);
-            res.status(500).json({ 
-                message: 'Erreur lors de l\'ajout du scooter', 
-                error: error.message || 'Erreur inconnue' 
+            res.status(500).json({
+                message: 'Erreur lors de l\'ajout du scooter',
+                error: error.message || 'Erreur inconnue'
             });
         }
     }
-    
-    
-    
+
+
+
 
     static async update(req: Request, res: Response) {
         try {
