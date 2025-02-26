@@ -7,15 +7,20 @@
     "backend"
   ],
   "scripts": {
-    "start": "cd backend && npm start",
-    "dev": "cd backend && npm run dev",
-    "build": "cd backend && npm run build",
-    "test": "cd backend && npm test",
+    "start:backend": "cd backend && npm start",
+    "start:frontend": "cd frontend && npm start",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm start",
+    "build:backend": "cd backend && npm run build",
+    "build:frontend": "cd frontend && npm run build",
+    "test:backend": "cd backend && npm test",
+    "test:frontend": "cd frontend && npm test",
     "docker:up": "docker-compose up -d",
     "docker:down": "docker-compose down",
     "docker:build": "docker-compose build",
     "docker:logs": "docker-compose logs -f",
-    "docker:restart": "docker-compose restart"
+    "docker:restart": "docker-compose restart",
+    "install:all": "npm install && cd backend && npm install && cd ../frontend && npm install"
   },
   "engines": {
     "node": ">=18.0.0"

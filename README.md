@@ -36,14 +36,34 @@ voltride/
 
 ### Running the Application
 
+#### Installation
+
+```bash
+# Install all dependencies (root, backend, and frontend)
+npm run install:all
+```
+
 #### Local Development
 
 ```bash
-# Development mode
-npm run dev
+# Start backend in development mode
+npm run dev:backend
 
-# Production mode
-npm start
+# In a separate terminal, start frontend in development mode
+npm run dev:frontend
+```
+
+#### Production Mode
+
+```bash
+# Build backend
+npm run build:backend
+
+# Build frontend
+npm run build:frontend
+
+# Start backend in production mode
+npm run start:backend
 ```
 
 #### Using Docker
@@ -63,6 +83,7 @@ npm run docker:down
 ```
 
 The application will be available at:
+- Frontend: http://localhost:3001
 - Backend API: http://localhost:3000
 - PostgreSQL Admin: http://localhost:5050 (email: admin@voltride.com, password: admin)
 - MongoDB Admin: http://localhost:8081 (username: admin, password: admin)
@@ -88,3 +109,8 @@ For more details, see the [backend README](./backend/README.md).
 
 ## License
 
+This project is licensed under the MIT License.
+
+## Screenshots
+
+![VoltRide Dashboard](./docs/screenshots/dashboard.png)
