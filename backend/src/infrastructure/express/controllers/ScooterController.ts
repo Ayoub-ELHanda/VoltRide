@@ -4,10 +4,10 @@ import { PrismaClient } from '@prisma/client';
 
 import { ScooterRepository } from '../../orm/ScooterRepository';
 import { ScooterModelRepository } from '../../orm/ScooterModelRepository';
-import { GetAllScooters } from '../../../application/use-cases/GetAllScooters';
-import { GetOneScooter } from '../../../application/use-cases/GetOneScooter';
-import { AddScooter } from '../../../application/use-cases/AddScooter';
-import { UpdateScooter } from '../../../application/use-cases/UpdateScooter';
+import { GetAllScooters } from '../../../application/use-cases/scooter/GetAllScooters';
+import { GetOneScooter } from '../../../application/use-cases/scooter/GetOneScooter';
+import { AddScooter } from '../../../application/use-cases/scooter/AddScooter';
+import { UpdateScooter } from '../../../application/use-cases/scooter/UpdateScooter';
 
 const scooterRepository = new ScooterRepository();
 const getAllScooters = new GetAllScooters(scooterRepository);

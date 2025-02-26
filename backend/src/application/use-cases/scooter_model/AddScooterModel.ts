@@ -1,5 +1,5 @@
-import { ScooterModel } from '../../domain/entities/ScooterModel';
-import { ScooterModelRepository } from '../../infrastructure/orm/ScooterModelRepository';
+import { ScooterModel } from '../../../domain/entities/ScooterModel';
+import { ScooterModelRepository } from '../../../infrastructure/orm/ScooterModelRepository';
 
 export class AddScooterModel {
     private scooterModelRepository: ScooterModelRepository;
