@@ -1,9 +1,7 @@
 import nodemailer from 'nodemailer';
-import { Twilio } from 'twilio';
 
 export class NotificationService {
     private emailTransporter;
-    private twilioClient;
 
     constructor() {
         this.emailTransporter = nodemailer.createTransport({
@@ -13,13 +11,9 @@ export class NotificationService {
                 pass: process.env.EMAIL_PASSWORD
             }
         });
-
-        this.twilioClient = new Twilio(
-            process.env.TWILIO_ACCOUNT_SID,
-            process.env.TWILIO_AUTH_TOKEN
-        );
     }
 
+    // ✅ Send Email
     async sendEmail(to: string, subject: string, message: string) {
         const mailOptions = {
             from: process.env.EMAIL_USER,
@@ -28,14 +22,30 @@ export class NotificationService {
             text: message
         };
 
-        await this.emailTransporter.sendMail(mailOptions);
+        try {
+            await this.emailTransporter.sendMail(mailOptions);
+            console.log("Email sent successfully");
+        } catch (error) {
+            console.error("Error sending email:", error);
+            throw new Error("Erreur lors de l'envoi de l'email");
+        }
     }
 
+    // ✅ Send SMS using Nodemailer and Nexmo
     async sendSMS(to: string, message: string) {
-        await this.twilioClient.messages.create({
-            body: message,
-            from: process.env.TWILIO_PHONE_NUMBER,
-            to
-        });
+        const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: `${to}@sms.vonage.com`, // Nexmo (Vonage) SMS Gateway
+            subject: 'SMS Notification',
+            text: message
+        };
+
+        try {
+            await this.emailTransporter.sendMail(mailOptions);
+            console.log("SMS sent successfully");
+        } catch (error) {
+            console.error("Error sending SMS:", error);
+            throw new Error("Erreur lors de l'envoi du SMS");
+        }
     }
 }
