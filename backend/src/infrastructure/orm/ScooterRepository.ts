@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/postgres/client';
+import { PrismaClient } from '@prisma/client';
 import { Scooter } from '../../domain/entities/Scooter';
 import { ScooterModel } from '../../domain/entities/ScooterModel';
 
@@ -31,7 +31,7 @@ export class ScooterRepository {
                 status: scooter.getStatus(),
                 dealer_id: scooter.getDealerId(),
                 partner_id: scooter.getPartnerId(),
-                scooter_model_id: scooter.getScooterModel().getId(),
+                scooterModelId: scooter.getScooterModel().getId(),
             },
         });
     }
@@ -46,7 +46,7 @@ export class ScooterRepository {
                 status: scooter.getStatus(),
                 dealer_id: scooter.getDealerId(),
                 partner_id: scooter.getPartnerId(),
-                scooter_model_id: scooter.getScooterModel().getId(),
+                scooterModelId: scooter.getScooterModel().getId(),
             },
         });
     }
