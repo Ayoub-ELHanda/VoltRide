@@ -1,11 +1,10 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../../node_modules/@prisma/postgres/client"
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -36,15 +35,26 @@ model Dealer {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 model Maintenance {
   id              Int      @id @default(autoincrement())
-  technician_name String   @db.VarChar
   type            String   @db.VarChar
-  date            DateTime @default(now()) @db.Timestamp(6)
-  cost            Decimal  @db.Decimal(10, 2)
+  date            DateTime
+  cost            Float
   comment         String?
-  scooter_id      Int
-  scooters        Scooter  @relation(fields: [scooter_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_maintenance_scooter")
+  technician_name String   @db.VarChar
+  scooter         Scooter  @relation(fields: [scooter_id], references: [id]) // Add this line
+  scooter_id      Int // Foreign key to Scooter
 
   @@map(name: "maintenances")
+}
+
+model Notification {
+  id           String   @id @default(uuid())
+  message      String
+  recipient    String
+  type         String
+  status       String
+  trigger_date DateTime // snake_case in the database
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
 }
 
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
@@ -98,10 +108,10 @@ model Scooter {
   status           String        @db.VarChar
   dealer_id        Int?
   partner_id       Int?
-  scooter_model_id Int
+  scooterModelId Int
   maintenances     Maintenance[]
   dealers          Dealer?       @relation(fields: [dealer_id], references: [id], onUpdate: NoAction, map: "fk_scooter_dealer")
-  scooters_models  Scooter_model @relation(fields: [scooter_model_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_scooter_model")
+  scooters_models  Scooter_model @relation(fields: [scooterModelId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_scooter_model")
   partners         Partner?      @relation(fields: [partner_id], references: [id], onUpdate: NoAction, map: "fk_scooter_partner")
   warranty         Warranty?
 
